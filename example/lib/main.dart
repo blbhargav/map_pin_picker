@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:geocoder/geocoder.dart';
+import 'package:flutter_geocoder/geocoder.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_pin_picker/map_pin_picker.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
     zoom: 14.4746,
   );
 
-  Address address;
+  Address? address;
 
   var textController = TextEditingController();
 
@@ -64,21 +64,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 onCameraMoveStarted: () {
                   // notify map is moving
-                  mapPickerController.mapMoving();
+                  mapPickerController.mapMoving!();
                 },
                 onCameraMove: (cameraPosition) {
                   this.cameraPosition = cameraPosition;
                 },
                 onCameraIdle: () async {
                   // notify map stopped moving
-                  mapPickerController.mapFinishedMoving();
+                  mapPickerController.mapFinishedMoving!();
                   //get address name from camera position
                   List<Address> addresses = await Geocoder.local
                       .findAddressesFromCoordinates(Coordinates(
                           cameraPosition.target.latitude,
                           cameraPosition.target.longitude));
                   // update the ui with the address
-                  textController.text = '${addresses.first?.addressLine ?? ''}';
+                  textController.text = '${addresses.first.addressLine ?? ''}';
                 },
               ),
             ),

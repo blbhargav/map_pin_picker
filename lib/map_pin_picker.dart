@@ -3,21 +3,21 @@ library map_pin_picker;
 import 'package:flutter/material.dart';
 
 class MapPickerController {
-  Function mapMoving;
-  Function mapFinishedMoving;
+  Function? mapMoving;
+  Function? mapFinishedMoving;
 }
 
 class MapPicker extends StatefulWidget {
   final Widget child;
   final Widget iconWidget;
   final bool showDot;
-  final MapPickerController mapPickerController;
+  final MapPickerController? mapPickerController;
 
   MapPicker(
-      {@required this.mapPickerController,
-      @required this.iconWidget,
+      {required this.mapPickerController,
+      required this.iconWidget,
       this.showDot = true,
-      @required this.child});
+      required this.child});
 
   @override
   _MapPickerState createState() => _MapPickerState();
@@ -25,26 +25,26 @@ class MapPicker extends StatefulWidget {
 
 class _MapPickerState extends State<MapPicker>
     with SingleTickerProviderStateMixin {
-  AnimationController animationController;
+  AnimationController? animationController;
 
   @override
   void initState() {
     animationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     if (widget.mapPickerController != null) {
-      widget.mapPickerController.mapMoving = mapMoving;
-      widget.mapPickerController.mapFinishedMoving = mapFinishedMoving;
+      widget.mapPickerController!.mapMoving = mapMoving;
+      widget.mapPickerController!.mapFinishedMoving = mapFinishedMoving;
     }
   }
 
   void mapMoving() {
-    if (!animationController.isCompleted || !animationController.isAnimating) {
-      animationController.forward();
+    if (!animationController!.isCompleted || !animationController!.isAnimating) {
+      animationController!.forward();
     }
   }
 
   void mapFinishedMoving() {
-    animationController.reverse();
+    animationController!.reverse();
   }
 
   @override
@@ -54,7 +54,7 @@ class _MapPickerState extends State<MapPicker>
         widget.child,
         Container(),
         AnimatedBuilder(
-            animation: animationController,
+            animation: animationController!,
             builder: (context, snapshot) {
               return Align(
                 alignment: Alignment.center,
@@ -62,7 +62,7 @@ class _MapPickerState extends State<MapPicker>
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Transform.translate(
-                      offset: Offset(0, -10 * animationController.value),
+                      offset: Offset(0, -10 * animationController!.value),
                       child: widget.iconWidget,
                     ),
                     if(widget.showDot)
